@@ -1,0 +1,11 @@
+{
+    "C_Cpp.default.compilerPath": "C:/msys64/ucrt64/bin/g++.exe",
+    "makefile.makefilePath": "D:\\LR1\\Makefile",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "d:\\LR1",
+            "binaryPath": "d:\\LR1\\LR1.exe",
+            "binaryArgs": []
+        }
+    ]
+}
