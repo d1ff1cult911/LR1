@@ -6,11 +6,6 @@
 #include <stdexcept>
 #include <iostream>
 
-/**
- * @file Lazy_sequence.h
- * @brief Класс ленивой последовательности (LazySequence)
- */
-
 template<typename T>
 class LazySequence {
 public:
@@ -54,4 +49,4 @@ private:
     size_t pos;
 };
 
-#include "../src/Lazy_sequence.cpp"  // подключаем реализацию шаблонов
+#include "../src/Lazy_sequence.cpp"
