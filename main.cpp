@@ -1,70 +1,54 @@
-#include "include/Lazy_sequence.h"
 #include <iostream>
+#include "include/LazyMultiTuringMachine.h"
 
-void run_tests();
+void demo_two_tape_copy() {
+    LazyMultiTuringMachine tm(2, '_');
 
-void demo_menu() {
-    std::cout << "=== ЛР1: Ленивые последовательности ===\n";
-    std::cout << "1) Показать N чисел Фибоначчи\n";
-    std::cout << "2) Показать N факториалов\n";
-    std::cout << "3) Демонстрация Map/Where\n";
-    std::cout << "4) Прогнать тесты\n";
-    std::cout << "0) Выход\n";
+    tm.setStartState("q0");
+    tm.addAcceptState("q_accept");
 
-    int choice;
-    while (true) {
-        std::cout << "\nВаш выбор: ";
-        if (!(std::cin >> choice)) break;
-        if (choice == 0) break;
+    tm.addTransition(
+        "q0",
+        {'1','_'},
+        {'1','1'},
+        {+1,+1},
+        "q0"
+    );
 
-        if (choice == 1) {
-            int N; std::cout << "N = "; std::cin >> N;
-            std::vector<long long> seeds = {1,1};
-            auto fibGen = [](LazySequence<long long>* self, size_t i)->long long {
-                if (i<2) return self->Get(i);
-                return self->Get(i-1)+self->Get(i-2);
-            };
-            LazySequence<long long> fib(seeds, fibGen);
-            for (int i=0;i<N;++i)
-                std::cout << fib.Get(i) << ' ';
-            std::cout << '\n';
-        }
+    tm.addTransition(
+        "q0",
+        {'_','_'},
+        {'_','_'},
+        {0,0},
+        "q_accept"
+    );
 
-        else if (choice == 2) {
-            int N; std::cout << "N = "; std::cin >> N;
-            std::vector<long long> seed = {1};
-            auto factGen = [](LazySequence<long long>* self, size_t i)->long long {
-                if (i==0) return 1;
-                return self->Get(i-1)*(long long)i;
-            };
-            LazySequence<long long> fact(seed, factGen);
-            for (int i=0;i<N;++i)
-                std::cout << fact.Get(i) << ' ';
-            std::cout << '\n';
-        }
+    std::string s;
+    std::cout << "Input unary string: ";
+    std::cin >> s;
 
-        else if (choice == 3) {
-            std::vector<int> base = {1,2,3,4,5,6,7,8};
-            auto seq = std::make_shared<LazySequence<int>>(base);
-            auto sq = seq->Map<int>([](const int& x){ return x*x; });
-            auto even = seq->Where([](const int& x){ return x%2==0; });
+    tm.loadTape(0, s);
+    tm.setHeadPosition(0,0);
+    tm.setHeadPosition(1,0);
 
-            std::cout << "Squares: ";
-            for (int i=0;i<5;++i) std::cout << sq.Get(i) << ' ';
-            std::cout << "\nEvens: ";
-            for (int i=0;i<4;++i) std::cout << even.Get(i) << ' ';
-            std::cout << '\n';
-        }
+    std::cout << "Before:\n";
+    tm.dumpState(10);
 
-        else if (choice == 4) {
-            run_tests();
-        }
+    bool ok = tm.run(10000);
 
-        else std::cout << "Неизвестный пункт меню\n";
-    }
+    std::cout << "After:\n";
+    tm.dumpState(10);
+
+    std::cout << "Accepted? " << (ok?"yes":"no") << "\n";
 }
 
 int main() {
-    demo_menu();
-    return 0;
+    while (true) {
+        std::cout << "1) Demo 2-tape copy machine\n0) Exit\n";
+        int c;
+        std::cin >> c;
+        if (c==0) break;
+        if (c==1) demo_two_tape_copy();
+        else std::cout << "Unknown\n";
+    }
 }

@@ -1,13 +1,14 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Iinclude
-SRC = src/Lazy_sequence.cpp src/Tests.cpp main.cpp
-OUT = LR1.exe
+
+SRC_MAIN = main.cpp src/LazyMultiTuringMachine.cpp
+SRC_TEST = src/tests.cpp src/LazyMultiTuringMachine.cpp
 
 all:
-	$(CXX) $(CXXFLAGS) $(SRC) -o $(OUT)
+	$(CXX) $(CXXFLAGS) $(SRC_MAIN) -o multitm.exe
 
-run: all
-	.\$(OUT)
+tests:
+	$(CXX) $(CXXFLAGS) $(SRC_TEST) -o tests.exe
 
 clean:
-	del $(OUT)
+	del *.exe
